@@ -42,6 +42,8 @@ const mostrarCarta = (carta: number) : void => {
             case 12:                    
                 ElementoCarta.src = "../img/12_rey-copas.jpg";
                 break;
+            default:
+                ElementoCarta.src = "../img/BocaAbajo.jpg";
             }
         }
 }
@@ -89,6 +91,16 @@ const mostrarMensajePlantarse = (estado: estado) => {
     }
 }
 
+const mostrarMensajePosibleResultado = () => {
+    const elementoResultado = document.getElementById("resultado");
+    if (elementoResultado) {
+        elementoResultado.innerHTML = `Tu puntuación hubiese sido: ${puntuacionUsuario}`;
+    } else {
+        console.error("mostrarMensajePosibleResultado: el elemento con id resultado no tiene valor");
+    }
+}
+
+
 
 const disabledButtonDameCarta = () :void =>{
     const dameCarta = <HTMLButtonElement>document.getElementById("dameCarta");
@@ -110,6 +122,26 @@ const disabledButtonPlantarse = () :void =>{
         }
 }
 
+const borrarBotónNuevaPartida = () => {
+    const boton = document.querySelector('#botonNuevaPartida');
+    if(boton) {
+        boton.remove();
+    } else {
+        console.error("borrarBotón: ele elemento con id botonNuevaPartida no se ha encontrado")
+    }
+}
+
+const borrarBotónSaberMás = () => {
+    const boton = document.querySelector('#botonSaberMás');
+    if(boton) {
+        boton.remove();
+    } else {
+        console.error("borrarBotónSaberMás: el elemento con id botonSaberMás no se ha encontrado")
+    }
+};
+
+
+
 const cambiarEstado = () : estado => {
     if (puntuacionUsuario <= 4) {
         return "CONSERVADOR";
@@ -129,6 +161,18 @@ const cambiarEstado = () : estado => {
     }
 }
 
+const comprobarEstadoBotón = () : boolean => {
+    const botón = <HTMLButtonElement>document.getElementById("dameCarta");
+        if (botón.disabled == true) { 
+            return true;
+        }
+        else {
+            console.error("buttonDisabled = elemento con id dameCarta no se ha encontrado");
+            return false;
+        };
+}
+
+
 const dameCartaAleatoria = () : number => {
     const numeroAleatorio = Math.floor(Math.random()*11);
     if(numeroAleatorio >= 8) return numeroAleatorio+2;
@@ -142,7 +186,9 @@ const dameCartaAleatoria = () : number => {
          puntuacionUsuario += 0.5;
      }
  }
+
  
+
  const activarGameOver = () : estado  => {
      if(puntuacionUsuario > 7.5){
          disabledButtonDameCarta();
@@ -151,45 +197,20 @@ const dameCartaAleatoria = () : number => {
      }
      return "KEEP_PLAYING";
  }
- 
-const jugarCarta = () => {
-    const cartaAleatoria = dameCartaAleatoria();
-    mostrarCarta(cartaAleatoria); 
-    sumarPuntuación(cartaAleatoria);
-    mostrarPuntuación();
-    mostrarMensajeGameOver(activarGameOver());
-}
 
-const plantase = () => {
-    const estadoActual = cambiarEstado();
-
-    mostrarMensajePlantarse(estadoActual);
-    disabledButtonDameCarta();
-}
-
-document.addEventListener("DOMContentLoaded", mostrarPuntuación);
-
-
-const botonDarCarta = document.getElementById("dameCarta");
-if(botonDarCarta) botonDarCarta.addEventListener("click", jugarCarta);
-else console.error("botonComprobar: elemento dameCarta no existe");
-
-const botonPlantarse = document.getElementById("plantarse");
-if(botonPlantarse) botonPlantarse.addEventListener("click", plantase);
-else console.error("botonPlantarse: elemento plantarse no existe");
-
-
-/*const activarNuevaPartida = (estado: boolean) => {
-    const container = document.getElementById('nuevaPartida');
+ const activarBotónNuevaPartida = (estado: boolean) => {
+    const container = document.getElementById('botones');
 
     if(container){
         const CrearNuevoBotón = () => {
             const botonNuevaPartida = document.createElement('button');
             botonNuevaPartida.textContent = 'Nueva Partida';
-            botonNuevaPartida.id = "botonNuevaPartida";
+            botonNuevaPartida.id = "botonNuevaPartida"
+
+            botonNuevaPartida.addEventListener("click", nuevaPartida);
 
             container.appendChild(botonNuevaPartida);
-            disabledButtonPlantasrse();
+            disabledButtonPlantarse();
         };
         if (estado === true) CrearNuevoBotón();
     } else {
@@ -209,34 +230,70 @@ const activarBotones = () => {
     }
 }
 
+const activarBotónSaberMás = () => {
+    const container = document.getElementById('botones');
+
+    if(container){
+        const CrearNuevoBotón = () => {
+            const botonSaberMas = document.createElement('button');
+            botonSaberMas.textContent = '¿Qué habría pasado?';
+            botonSaberMas.id = "botonSaberMás"
+
+            botonSaberMas.addEventListener("click", saberMas);
+
+            container.appendChild(botonSaberMas);
+            disabledButtonPlantarse();
+        };
+        CrearNuevoBotón();
+    } else {
+        console.error("activarNuevaPartida: el elemento nuevaPartida no se ha encontrado");
+    };
+}
+
+ 
+
+const jugarCarta = () => {
+    const cartaAleatoria = dameCartaAleatoria();
+    mostrarCarta(cartaAleatoria); 
+    sumarPuntuación(cartaAleatoria);
+    mostrarPuntuación();
+    mostrarMensajeGameOver(activarGameOver());
+    activarBotónNuevaPartida(comprobarEstadoBotón());
+}
+
+const plantase = () => {
+    const estadoActual = cambiarEstado();
+
+    mostrarMensajePlantarse(estadoActual);
+    disabledButtonDameCarta();
+    activarBotónNuevaPartida(comprobarEstadoBotón());
+    activarBotónSaberMás();
+}
+
 const nuevaPartida = () => {
+    activarBotones();
     puntuacionUsuario = 0;
-    mostrarPuntuación;
-    activarBotones;
+    mostrarPuntuación();
+    borrarBotónNuevaPartida();
+    mostrarCarta(0);
 }
 
-const disabledButtonPlantasrse = () :void =>{
-    const plantarse = <HTMLButtonElement>document.getElementById("plantarse");
-        if (plantarse) { 
-            plantarse.disabled = true;
-        }
-        else {
-            console.error("disabledButtonPlantasrse = elemento con id plantarse no se ha encontrado");
-        }
+const saberMas = () => {
+    const cartaAleatoria = dameCartaAleatoria();
+    sumarPuntuación(cartaAleatoria);
+    mostrarPuntuación();
+    mostrarMensajePosibleResultado();
+    mostrarCarta(0);
+    borrarBotónSaberMás();
 }
 
-const comprobarEstadoBotón = () : boolean => {
-    const botón = <HTMLButtonElement>document.getElementById("dameCarta");
-        if (botón.disabled == true) { 
-            return true;
-        }
-        else {
-            console.error("buttonDisabled = elemento con id dameCarta no se ha encontrado");
-            return false;
-        }
-}
+document.addEventListener("DOMContentLoaded", mostrarPuntuación);
 
-const botonNuevaPartida = document.getElementById("botonNuevaPartida");
-if(botonNuevaPartida) botonNuevaPartida.addEventListener("click", nuevaPartida);
-else console.error("botonNuevaPartida: elemento botonNuevaPartida no existe");
-*/
+
+const botonDarCarta = document.getElementById("dameCarta");
+if(botonDarCarta) botonDarCarta.addEventListener("click", jugarCarta);
+else console.error("botonComprobar: elemento dameCarta no existe");
+
+const botonPlantarse = document.getElementById("plantarse");
+if(botonPlantarse) botonPlantarse.addEventListener("click", plantase);
+else console.error("botonPlantarse: elemento plantarse no existe");
