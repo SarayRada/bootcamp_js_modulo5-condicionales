@@ -104,40 +104,35 @@ const mostrarMensajePosibleResultado = () => {
 
 const disabledButtonDameCarta = () :void =>{
     const dameCarta = <HTMLButtonElement>document.getElementById("dameCarta");
-        if (dameCarta) { 
-            dameCarta.disabled = true;
-        }
-        else {
-            console.error("disabledButtonDameCarta = elemento con id dameCarta no se ha encontrado");
-        }
+
+    dameCarta
+        ? dameCarta.disabled = true
+        : console.error("disabledButtonDameCarta = elemento con id dameCarta no se ha encontrado");
+
 }
 
 const disabledButtonPlantarse = () :void =>{
     const plantarse = <HTMLButtonElement>document.getElementById("plantarse");
-        if (plantarse) { 
-            plantarse.disabled = true;
-        }
-        else {
-            console.error("disabledButtonPlantasrse = elemento con id plantarse no se ha encontrado");
-        }
+
+    plantarse
+        ?  plantarse.disabled = true
+        : console.error("disabledButtonPlantasrse = elemento con id plantarse no se ha encontrado")
 }
 
 const borrarBotónNuevaPartida = () => {
     const boton = document.querySelector('#botonNuevaPartida');
-    if(boton) {
-        boton.remove();
-    } else {
-        console.error("borrarBotón: ele elemento con id botonNuevaPartida no se ha encontrado")
-    }
+
+    boton
+        ? boton.remove()
+        : console.error("borrarBotón: ele elemento con id botonNuevaPartida no se ha encontrado")
 }
 
 const borrarBotónSaberMás = () => {
     const boton = document.querySelector('#botonSaberMás');
-    if(boton) {
-        boton.remove();
-    } else {
-        console.error("borrarBotónSaberMás: el elemento con id botonSaberMás no se ha encontrado")
-    }
+
+    boton
+        ? boton.remove()
+        : console.error("borrarBotónSaberMás: el elemento con id botonSaberMás no se ha encontrado")
 };
 
 
@@ -156,27 +151,24 @@ const cambiarEstado = () : estado => {
         case 7.5:
             return "WINNER";
         default:
-            activarGameOver;
+            activarEstadoGameOver;
             return "GAME_OVER";
     }
 }
 
-const comprobarEstadoBotón = () : boolean => {
+const comprobarEstadoBotónDameCarta = () : boolean => {
     const botón = <HTMLButtonElement>document.getElementById("dameCarta");
-        if (botón.disabled == true) { 
-            return true;
-        }
-        else {
-            console.error("buttonDisabled = elemento con id dameCarta no se ha encontrado");
-            return false;
-        };
+
+    return botón.disabled
 }
 
 
 const dameCartaAleatoria = () : number => {
     const numeroAleatorio = Math.floor(Math.random()*11);
-    if(numeroAleatorio >= 8) return numeroAleatorio+2;
-    else return numeroAleatorio;
+    if(numeroAleatorio >= 8) {
+        return numeroAleatorio+2;
+    }
+    return numeroAleatorio;
  }
  
  const sumarPuntuación = (carta:number) :void => {
@@ -189,7 +181,7 @@ const dameCartaAleatoria = () : number => {
 
  
 
- const activarGameOver = () : estado  => {
+ const activarEstadoGameOver = () : estado  => {
      if(puntuacionUsuario > 7.5){
          disabledButtonDameCarta();
          disabledButtonPlantarse();
@@ -198,7 +190,7 @@ const dameCartaAleatoria = () : number => {
      return "KEEP_PLAYING";
  }
 
- const activarBotónNuevaPartida = (estado: boolean) => {
+ const activarBotónNuevaPartida = (disabled: boolean) => {
     const container = document.getElementById('botones');
 
     if(container){
@@ -212,9 +204,9 @@ const dameCartaAleatoria = () : number => {
             container.appendChild(botonNuevaPartida);
             disabledButtonPlantarse();
         };
-        if (estado === true) CrearNuevoBotón();
+        if (disabled === true) CrearNuevoBotón();
     } else {
-        console.error("activarNuevaPartida: el elemento nuevaPartida no se ha encontrado");
+        console.error("activarNuevaPartida: el elemento botones no se ha encontrado");
     };
 }
 
@@ -246,7 +238,7 @@ const activarBotónSaberMás = () => {
         };
         CrearNuevoBotón();
     } else {
-        console.error("activarNuevaPartida: el elemento nuevaPartida no se ha encontrado");
+        console.error("activarNuevaPartida: el elemento botones no se ha encontrado");
     };
 }
 
@@ -257,8 +249,8 @@ const jugarCarta = () => {
     mostrarCarta(cartaAleatoria); 
     sumarPuntuación(cartaAleatoria);
     mostrarPuntuación();
-    mostrarMensajeGameOver(activarGameOver());
-    activarBotónNuevaPartida(comprobarEstadoBotón());
+    mostrarMensajeGameOver(activarEstadoGameOver());
+    activarBotónNuevaPartida(comprobarEstadoBotónDameCarta());
 }
 
 const plantase = () => {
@@ -266,7 +258,7 @@ const plantase = () => {
 
     mostrarMensajePlantarse(estadoActual);
     disabledButtonDameCarta();
-    activarBotónNuevaPartida(comprobarEstadoBotón());
+    activarBotónNuevaPartida(comprobarEstadoBotónDameCarta());
     activarBotónSaberMás();
 }
 
