@@ -14,11 +14,17 @@
   -webkit-text-size-adjust: 100%;
 }
 
-.botones button{
-  background-color: #3179c682;
-  color:#ffffff
 
+.botones button {
+  background-color: #3179c682;
+  color:#ffffff;
 }
+
+.botones :disabled {
+  background-color: #3179c62e;
+  color:#ffffff;
+}
+
 
 a {
   font-weight: 500;
@@ -82,6 +88,7 @@ h1 {
 
 button {
   margin-top: 24px;
+  margin-left: 6px;
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
