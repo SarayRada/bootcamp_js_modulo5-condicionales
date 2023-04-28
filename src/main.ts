@@ -1,4 +1,4 @@
-type estado = 
+type Estado = 
 "GAME_OVER" | 
 "KEEP_PLAYING" | 
 "CONSERVADOR" | 
@@ -9,43 +9,49 @@ type estado =
 let puntuacionUsuario = 0;
 
 const mostrarCarta = (carta: number) : void => {
-    const ElementoCarta = <HTMLImageElement> document.getElementById("imagen-carta");
-    if(ElementoCarta) {
-        switch(carta){               
+    switch(carta){               
             case 1:
-                ElementoCarta.src = "../img/1_as-copas.jpg";
+                imprimirCarta("../img/1_as-copas.jpg");
                 break;
             case 2:
-                ElementoCarta.src = "../img/2_dos-copas.jpg";
+                imprimirCarta("../img/2_dos-copas.jpg");
                 break;               
             case 3:
-                ElementoCarta.src = "../img/3_tres-copas.jpg";
+               imprimirCarta("../img/3_tres-copas.jpg");
                 break;
             case 4:                    
-                ElementoCarta.src = "../img/4_cuatro-copas.jpg";
+                imprimirCarta("../img/4_cuatro-copas.jpg");
                 break;
             case 5:
-                ElementoCarta.src = "../img/5_cinco-copas.jpg";
+               imprimirCarta("../img/5_cinco-copas.jpg");
                 break;               
             case 6:
-                ElementoCarta.src = "../img/6_seis-copas.jpg";
+                imprimirCarta("../img/6_seis-copas.jpg");
                 break;
             case 7:
-                ElementoCarta.src = "../img/7_siete-copas.jpg";
+                imprimirCarta("../img/7_siete-copas.jpg");
                 break;               
             case 10:
-                ElementoCarta.src = "../img/10_sota-copas.jpg";
+                imprimirCarta("../img/10_sota-copas.jpg");
                 break;
             case 11:                    
-                ElementoCarta.src = "../img/11_caballo-copas.jpg";
+               imprimirCarta("../img/11_caballo-copas.jpg");
                 break;
             case 12:                    
-                ElementoCarta.src = "../img/12_rey-copas.jpg";
+                imprimirCarta("../img/12_rey-copas.jpg");
                 break;
             default:
-                ElementoCarta.src = "../img/BocaAbajo.jpg";
-            }
-        }
+                imprimirCarta("../img/BocaAbajo.jpg");
+    }
+}
+
+const imprimirCarta = (url: string) => {
+    const ElementoCarta = document.getElementById("imagen-carta");
+    if(ElementoCarta && ElementoCarta instanceof HTMLImageElement) {
+        ElementoCarta.src = url;
+    } else {
+        console.error("imprimirCarta: el elemento imagen-carta no se ha encontrado")
+    }
 }
 
 const mostrarPuntuación = () => {
@@ -57,7 +63,7 @@ const mostrarPuntuación = () => {
     }
 }
 
-const mostrarMensajeGameOver = (estado : estado) => {
+const mostrarMensajeGameOver = (estado : Estado) => {
     const resultado = document.getElementById("resultado");
     if (resultado && estado==="GAME_OVER") {
         resultado.innerHTML = `GAME OVER: tu puntuación es ${puntuacionUsuario}.`;
@@ -66,7 +72,7 @@ const mostrarMensajeGameOver = (estado : estado) => {
     }
 }
 
-const mostrarMensajePlantarse = (estado: estado) => {
+const mostrarMensajePlantarse = (estado: Estado) => {
     const resultado = document.getElementById("resultado");
     if (resultado) {
         switch(estado){
@@ -137,7 +143,7 @@ const borrarBotónSaberMás = () => {
 
 
 
-const cambiarEstado = () : estado => {
+const cambiarEstado = () : Estado => {
     if (puntuacionUsuario <= 4) {
         return "CONSERVADOR";
     }
@@ -181,7 +187,7 @@ const dameCartaAleatoria = () : number => {
 
  
 
- const activarEstadoGameOver = () : estado  => {
+ const activarEstadoGameOver = () : Estado  => {
      if(puntuacionUsuario > 7.5){
          disabledButtonDameCarta();
          disabledButtonPlantarse();
