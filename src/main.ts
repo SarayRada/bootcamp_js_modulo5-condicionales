@@ -8,6 +8,24 @@ type Estado =
 
 let puntuacionUsuario = 0;
 
+const insertarAlResultadoTexto = (textoAMostrar: string) => {
+    const resultado = document.getElementById("resultado");
+    if (resultado && resultado instanceof HTMLElement) {
+        resultado.innerHTML = textoAMostrar
+    } else {
+        console.error("mostrarPuntuación: el elemento con id resultado no tiene valor");
+    }
+}
+
+const imprimirCarta = (url: string) => {
+    const ElementoCarta = document.getElementById("imagen-carta");
+    if(ElementoCarta && ElementoCarta instanceof HTMLImageElement) {
+        ElementoCarta.src = url;
+    } else {
+        console.error("imprimirCarta: el elemento imagen-carta no se ha encontrado")
+    }
+}
+
 const mostrarCarta = (carta: number) : void => {
     switch(carta){               
             case 1:
@@ -45,73 +63,44 @@ const mostrarCarta = (carta: number) : void => {
     }
 }
 
-const imprimirCarta = (url: string) => {
-    const ElementoCarta = document.getElementById("imagen-carta");
-    if(ElementoCarta && ElementoCarta instanceof HTMLImageElement) {
-        ElementoCarta.src = url;
-    } else {
-        console.error("imprimirCarta: el elemento imagen-carta no se ha encontrado")
-    }
-}
-
 const mostrarPuntuación = () => {
-    const resultado = document.getElementById("resultado");
-    if (resultado) {
-        resultado.innerHTML = `Tu puntuación actual es: ${puntuacionUsuario}`;
-    } else {
-        console.error("mostrarPuntuación: el elemento con id resultado no tiene valor");
-    }
+    insertarAlResultadoTexto(`Tu puntuación actual es: ${puntuacionUsuario}`);
 }
 
 const mostrarMensajeGameOver = (estado : Estado) => {
-    const resultado = document.getElementById("resultado");
-    if (resultado && estado==="GAME_OVER") {
-        resultado.innerHTML = `GAME OVER: tu puntuación es ${puntuacionUsuario}.`;
-    } else {
-        console.error("mostrarPuntuación: el elemento con id resultado no tiene valor");
+    if (estado==="GAME_OVER") {
+        insertarAlResultadoTexto(`GAME OVER: tu puntuación es ${puntuacionUsuario}`);
     }
 }
 
 const mostrarMensajePlantarse = (estado: Estado) => {
-    const resultado = document.getElementById("resultado");
-    if (resultado) {
-        switch(estado){
-            case "CONSERVADOR":
-                resultado.innerHTML = "Has sido muy conservador.";
-                break;
-            case "CAGUETA":
-                resultado.innerHTML = "Te ha entrado caguelo eh?";
-                break;
-            case "CASI":
-                resultado.innerHTML = "Casi casi...";
-                break;
-            case "WINNER":
-                resultado.innerHTML = "¡Lo has clavado! ¡ENHORABUENA!";
-                break;
-            default:
-                resultado.innerHTML = "No se cómo hemos acabado aquí!";
-                break;
-        }
-    } else {
-        console.error("mostrarPuntuación: el elemento con id resultado no tiene valor");
-    }
+    switch(estado){
+        case "CONSERVADOR":
+            insertarAlResultadoTexto("Has sido muy conservador.");
+            break;
+        case "CAGUETA":
+            insertarAlResultadoTexto("Te ha entrado caguelo eh?");
+            break;
+        case "CASI":
+            insertarAlResultadoTexto("Casi casi...");
+            break;
+        case "WINNER":
+            insertarAlResultadoTexto("¡Lo has clavado! ¡ENHORABUENA!");
+            break;
+        default:
+            insertarAlResultadoTexto("No se cómo hemos acabado aquí!");
+            break;
+     }
 }
 
 const mostrarMensajePosibleResultado = () => {
-    const elementoResultado = document.getElementById("resultado");
-    if (elementoResultado) {
-        elementoResultado.innerHTML = `Tu puntuación hubiese sido: ${puntuacionUsuario}`;
-    } else {
-        console.error("mostrarMensajePosibleResultado: el elemento con id resultado no tiene valor");
-    }
+    insertarAlResultadoTexto(`Tu puntuación hubiese sido: ${puntuacionUsuario}`);
 }
-
-
 
 const disabledButtonDameCarta = () :void =>{
     const dameCarta = <HTMLButtonElement>document.getElementById("dameCarta");
 
-    dameCarta
+    dameCarta instanceof HTMLButtonElement
         ? dameCarta.disabled = true
         : console.error("disabledButtonDameCarta = elemento con id dameCarta no se ha encontrado");
 
@@ -120,7 +109,7 @@ const disabledButtonDameCarta = () :void =>{
 const disabledButtonPlantarse = () :void =>{
     const plantarse = <HTMLButtonElement>document.getElementById("plantarse");
 
-    plantarse
+    plantarse instanceof HTMLButtonElement
         ?  plantarse.disabled = true
         : console.error("disabledButtonPlantasrse = elemento con id plantarse no se ha encontrado")
 }
@@ -133,33 +122,37 @@ const borrarBotónNuevaPartida = () => {
         : console.error("borrarBotón: ele elemento con id botonNuevaPartida no se ha encontrado")
 }
 
-const borrarBotónSaberMás = () => {
-    const boton = document.querySelector('#botonSaberMás');
+const disabledButtonNuevaPartida = () => {
+    const boton = document.getElementById("nuevaPartida");
 
-    boton
-        ? boton.remove()
-        : console.error("borrarBotónSaberMás: el elemento con id botonSaberMás no se ha encontrado")
+    boton instanceof HTMLButtonElement
+        ? boton.disabled = true
+        : console.error("disabledButtonNuevaPartida: el elemento con id nuevaPartida no se ha encontrado")
+}
+
+const disabledButtonQueHubiesePasado = () => {
+    const boton = document.getElementById("queHubiesePasado");
+
+    boton instanceof HTMLButtonElement
+        ? boton.disabled = true
+        : console.error("disabledButtonQueHubiesePasado: el elemento con id queHubiesePasado no se ha encontrado")
 };
 
-
-
 const cambiarEstado = () : Estado => {
-    if (puntuacionUsuario <= 4) {
+    if (puntuacionUsuario < 4) {
         return "CONSERVADOR";
     }
-    switch(puntuacionUsuario){
-        case 5:
-            return "CAGUETA";
-        case 6:
-            return "CASI";
-        case 7:
-            return "CASI";
-        case 7.5:
-            return "WINNER";
-        default:
-            activarEstadoGameOver;
-            return "GAME_OVER";
+    if (puntuacionUsuario >= 4 && puntuacionUsuario < 6 ){
+        return "CAGUETA";
     }
+    if (puntuacionUsuario >= 6 && puntuacionUsuario <= 7 ){
+        return "CASI";
+    }
+    if (puntuacionUsuario = 7.5 ){
+        return "WINNER";
+    }
+    else 
+        return "GAME_OVER";
 }
 
 const comprobarEstadoBotónDameCarta = () : boolean => {
@@ -167,7 +160,6 @@ const comprobarEstadoBotónDameCarta = () : boolean => {
 
     return botón.disabled
 }
-
 
 const dameCartaAleatoria = () : number => {
     const numeroAleatorio = Math.floor(Math.random()*11);
@@ -177,15 +169,11 @@ const dameCartaAleatoria = () : number => {
     return numeroAleatorio;
  }
  
- const sumarPuntuación = (carta:number) :void => {
-     if(carta <= 7) {
-         puntuacionUsuario += carta;
-     } else {
-         puntuacionUsuario += 0.5;
-     }
- }
-
- 
+const sumarPuntuación = (carta:number) :void => {
+    carta <= 7 
+        ? puntuacionUsuario += carta
+        : puntuacionUsuario += 0.5;
+}
 
  const activarEstadoGameOver = () : Estado  => {
      if(puntuacionUsuario > 7.5){
@@ -197,29 +185,20 @@ const dameCartaAleatoria = () : number => {
  }
 
  const activarBotónNuevaPartida = (disabled: boolean) => {
-    const container = document.getElementById('botones');
+    if(disabled == true){
+        const botón = document.getElementById('nuevaPartida');
 
-    if(container){
-        const CrearNuevoBotón = () => {
-            const botonNuevaPartida = document.createElement('button');
-            botonNuevaPartida.textContent = 'Nueva Partida';
-            botonNuevaPartida.id = "botonNuevaPartida"
-
-            botonNuevaPartida.addEventListener("click", nuevaPartida);
-
-            container.appendChild(botonNuevaPartida);
-            disabledButtonPlantarse();
-        };
-        if (disabled === true) CrearNuevoBotón();
-    } else {
-        console.error("activarNuevaPartida: el elemento botones no se ha encontrado");
-    };
+        botón instanceof HTMLButtonElement
+            ? botón.disabled = false
+            : console.error("activarBotónNuevaPartida: el elemento con el id nuevaPartida es null")
+    
+    }
 }
 
 const activarBotones = () => {
     const plantarse = <HTMLButtonElement>document.getElementById("plantarse");
     const dameCarta = <HTMLButtonElement>document.getElementById("dameCarta");
-    if (plantarse && dameCarta) { 
+    if (plantarse instanceof HTMLButtonElement && dameCarta instanceof HTMLButtonElement) { 
         plantarse.disabled = false;
         dameCarta.disabled =false;
     }
@@ -229,35 +208,27 @@ const activarBotones = () => {
 }
 
 const activarBotónSaberMás = () => {
-    const container = document.getElementById('botones');
+    const botón = document.getElementById('queHubiesePasado');
 
-    if(container){
-        const CrearNuevoBotón = () => {
-            const botonSaberMas = document.createElement('button');
-            botonSaberMas.textContent = '¿Qué habría pasado?';
-            botonSaberMas.id = "botonSaberMás"
-
-            botonSaberMas.addEventListener("click", saberMas);
-
-            container.appendChild(botonSaberMas);
-            disabledButtonPlantarse();
-        };
-        CrearNuevoBotón();
-    } else {
-        console.error("activarNuevaPartida: el elemento botones no se ha encontrado");
-    };
+    botón instanceof HTMLButtonElement
+        ? botón.disabled = false
+        : console.error("activarBotónNuevaPartida: el elemento con el id nuevaPartida es null")
 }
 
- 
+const comprobarPuntuación = () => {
+    if (puntuacionUsuario > 7.5) {
+        mostrarMensajeGameOver(activarEstadoGameOver());
+        activarBotónNuevaPartida(comprobarEstadoBotónDameCarta());
+    }
+ }
 
 const jugarCarta = () => {
     const cartaAleatoria = dameCartaAleatoria();
     mostrarCarta(cartaAleatoria); 
     sumarPuntuación(cartaAleatoria);
     mostrarPuntuación();
-    mostrarMensajeGameOver(activarEstadoGameOver());
-    activarBotónNuevaPartida(comprobarEstadoBotónDameCarta());
-}
+    comprobarPuntuación();
+};
 
 const plantase = () => {
     const estadoActual = cambiarEstado();
@@ -272,26 +243,39 @@ const nuevaPartida = () => {
     activarBotones();
     puntuacionUsuario = 0;
     mostrarPuntuación();
-    borrarBotónNuevaPartida();
+    disabledButtonNuevaPartida();
+    disabledButtonQueHubiesePasado();
     mostrarCarta(0);
 }
 
 const saberMas = () => {
+    disabledButtonPlantarse();
     const cartaAleatoria = dameCartaAleatoria();
+    mostrarCarta(cartaAleatoria);
     sumarPuntuación(cartaAleatoria);
     mostrarPuntuación();
     mostrarMensajePosibleResultado();
-    mostrarCarta(0);
-    borrarBotónSaberMás();
+    disabledButtonQueHubiesePasado();
 }
 
 document.addEventListener("DOMContentLoaded", mostrarPuntuación);
 
-
 const botonDarCarta = document.getElementById("dameCarta");
-if(botonDarCarta) botonDarCarta.addEventListener("click", jugarCarta);
-else console.error("botonComprobar: elemento dameCarta no existe");
+botonDarCarta instanceof HTMLButtonElement
+    ? botonDarCarta.addEventListener("click", jugarCarta)
+    : console.error("botonComprobar: elemento dameCarta no existe");
 
 const botonPlantarse = document.getElementById("plantarse");
-if(botonPlantarse) botonPlantarse.addEventListener("click", plantase);
-else console.error("botonPlantarse: elemento plantarse no existe");
+botonPlantarse instanceof HTMLButtonElement
+    ? botonPlantarse.addEventListener("click", plantase)
+    : console.error("botonPlantarse: elemento plantarse no existe");
+
+const botonNuevaPartida = document.getElementById("nuevaPartida");
+botonNuevaPartida instanceof HTMLButtonElement
+    ? botonNuevaPartida.addEventListener("click", nuevaPartida)
+    : console.error("botonPlantarse: elemento plantarse no existe");
+
+const botonSaberMas = document.getElementById("queHubiesePasado");
+botonSaberMas instanceof HTMLButtonElement
+    ? botonSaberMas.addEventListener("click", saberMas)
+    : console.error("botonPlantarse: elemento plantarse no existe");
