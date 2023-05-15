@@ -162,17 +162,21 @@ const comprobarEstadoBotónDameCarta = () : boolean => {
 }
 
 const dameCartaAleatoria = () : number => {
-    const numeroAleatorio = Math.floor(Math.random()*11);
+    const numeroAleatorio = Math.floor(Math.random()*10);
     if(numeroAleatorio >= 8) {
         return numeroAleatorio+2;
     }
     return numeroAleatorio;
  }
  
-const sumarPuntuación = (carta:number) :void => {
-    carta <= 7 
-        ? puntuacionUsuario += carta
-        : puntuacionUsuario += 0.5;
+const calcularPuntuaciónSegúnCarta = (carta:number) :number => {
+    return carta <= 7 
+        ? carta
+        : 0.5;
+}
+
+const sumarPuntación = (carta:number) : void => {
+    puntuacionUsuario += carta;
 }
 
  const activarEstadoGameOver = () : Estado  => {
@@ -220,12 +224,12 @@ const comprobarPuntuación = () => {
         mostrarMensajeGameOver(activarEstadoGameOver());
         activarBotónNuevaPartida(comprobarEstadoBotónDameCarta());
     }
- }
+}
 
 const jugarCarta = () => {
     const cartaAleatoria = dameCartaAleatoria();
     mostrarCarta(cartaAleatoria); 
-    sumarPuntuación(cartaAleatoria);
+    sumarPuntación(calcularPuntuaciónSegúnCarta(cartaAleatoria));
     mostrarPuntuación();
     comprobarPuntuación();
 };
@@ -252,7 +256,7 @@ const saberMas = () => {
     disabledButtonPlantarse();
     const cartaAleatoria = dameCartaAleatoria();
     mostrarCarta(cartaAleatoria);
-    sumarPuntuación(cartaAleatoria);
+    sumarPuntación(calcularPuntuaciónSegúnCarta(cartaAleatoria));
     mostrarPuntuación();
     mostrarMensajePosibleResultado();
     disabledButtonQueHubiesePasado();
