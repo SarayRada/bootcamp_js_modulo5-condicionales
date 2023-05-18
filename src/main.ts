@@ -16,9 +16,9 @@ const insertarAlResultadoTexto = (textoAMostrar: string) => {
 }
 
 const imprimirCarta = (url: string) => {
-    const ElementoCarta = document.getElementById("imagen-carta");
-    ElementoCarta instanceof HTMLImageElement
-        ? ElementoCarta.src = url
+    const elementoCarta = document.getElementById("imagen-carta");
+    elementoCarta instanceof HTMLImageElement
+        ? elementoCarta.src = url
         : console.error("imprimirCarta: el elemento imagen-carta no se ha encontrado")
 }
 
@@ -94,7 +94,7 @@ const mostrarMensajePosibleResultado = () => {
 }
 
 const disabledButtonDameCarta = () :void =>{
-    const dameCarta = <HTMLButtonElement>document.getElementById("dameCarta");
+    const dameCarta = document.getElementById("dameCarta");
 
     dameCarta instanceof HTMLButtonElement
         ? dameCarta.disabled = true
@@ -103,7 +103,7 @@ const disabledButtonDameCarta = () :void =>{
 }
 
 const disabledButtonPlantarse = () :void =>{
-    const plantarse = <HTMLButtonElement>document.getElementById("plantarse");
+    const plantarse = document.getElementById("plantarse");
 
     plantarse instanceof HTMLButtonElement
         ?  plantarse.disabled = true
@@ -150,16 +150,20 @@ const cambiarEstado = () : Estado => {
 }
 
 const comprobarEstadoBotónDameCarta = () : boolean => {
-    const botón = <HTMLButtonElement>document.getElementById("dameCarta");
-
-    return botón.disabled
+    const botón = document.getElementById("dameCarta");
+    return botón && botón instanceof HTMLButtonElement
+        ? botón.disabled
+        : false
 }
 
-const dameCartaAleatoria = () : number => {
-    const numeroAleatorio = Math.floor(Math.random()*10);
-    return numeroAleatorio >= 8
-        ? numeroAleatorio+2
-        : numeroAleatorio;
+const crearNumeroAleatorio = () : number => {
+    return Math.floor(Math.random()*10)
+}
+
+const dameCartaAleatoria = (numero: number) : number => {
+    return numero >= 8
+        ? numero+2
+        : numero;
  }
  
 const calcularPuntuaciónSegúnCarta = (carta:number) :number => {
@@ -193,8 +197,8 @@ const sumarPuntación = (carta:number) : void => {
 }
 
 const activarBotones = () => {
-    const plantarse = <HTMLButtonElement>document.getElementById("plantarse");
-    const dameCarta = <HTMLButtonElement>document.getElementById("dameCarta");
+    const plantarse = document.getElementById("plantarse");
+    const dameCarta = document.getElementById("dameCarta");
     if (plantarse instanceof HTMLButtonElement && dameCarta instanceof HTMLButtonElement) { 
         plantarse.disabled = false;
         dameCarta.disabled =false;
@@ -220,7 +224,7 @@ const comprobarPuntuación = () => {
 }
 
 const jugarCarta = () => {
-    const cartaAleatoria = dameCartaAleatoria();
+    const cartaAleatoria = dameCartaAleatoria(crearNumeroAleatorio());
     mostrarCarta(cartaAleatoria); 
     sumarPuntación(calcularPuntuaciónSegúnCarta(cartaAleatoria));
     mostrarPuntuación();
@@ -247,7 +251,7 @@ const nuevaPartida = () => {
 
 const saberMas = () => {
     disabledButtonPlantarse();
-    const cartaAleatoria = dameCartaAleatoria();
+    const cartaAleatoria = dameCartaAleatoria(crearNumeroAleatorio());
     mostrarCarta(cartaAleatoria);
     sumarPuntación(calcularPuntuaciónSegúnCarta(cartaAleatoria));
     mostrarPuntuación();
