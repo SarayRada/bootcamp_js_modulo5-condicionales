@@ -193,6 +193,12 @@ const sumarPuntación = (carta:number) : void => {
     
     }
 }
+const activarEstadoWinner = () => {
+    mostrarMensajePlantarse(cambiarEstado());
+    disabledButtonDameCarta();
+    disabledButtonPlantarse();
+    activarBotónNuevaPartida(comprobarEstadoBotónDameCarta());
+}
 
 const activarBotones = () => {
     const plantarse = document.getElementById("plantarse");
@@ -216,10 +222,7 @@ const activarBotónSaberMás = () => {
 
 const comprobarPuntuación = () => {
     if (puntuacionUsuario == 7.5) {
-        mostrarMensajePlantarse(cambiarEstado());
-        disabledButtonDameCarta();
-        disabledButtonPlantarse();
-        activarBotónNuevaPartida(comprobarEstadoBotónDameCarta());
+       activarEstadoWinner();
     }
     if (puntuacionUsuario > 7.5) {
         mostrarMensajeGameOver(activarEstadoGameOver());
