@@ -10,20 +10,16 @@ let puntuacionUsuario = 0;
 
 const insertarAlResultadoTexto = (textoAMostrar: string) => {
     const resultado = document.getElementById("resultado");
-    if (resultado && resultado instanceof HTMLElement) {
-        resultado.innerHTML = textoAMostrar
-    } else {
-        console.error("mostrarPuntuación: el elemento con id resultado no tiene valor");
-    }
+    resultado instanceof HTMLElement
+        ? resultado.innerHTML = textoAMostrar
+        : console.error("mostrarPuntuación: el elemento con id resultado no tiene valor");
 }
 
 const imprimirCarta = (url: string) => {
     const ElementoCarta = document.getElementById("imagen-carta");
-    if(ElementoCarta && ElementoCarta instanceof HTMLImageElement) {
-        ElementoCarta.src = url;
-    } else {
-        console.error("imprimirCarta: el elemento imagen-carta no se ha encontrado")
-    }
+    ElementoCarta instanceof HTMLImageElement
+        ? ElementoCarta.src = url
+        : console.error("imprimirCarta: el elemento imagen-carta no se ha encontrado")
 }
 
 const mostrarCarta = (carta: number) : void => {
@@ -148,11 +144,9 @@ const cambiarEstado = () : Estado => {
     if (puntuacionUsuario >= 6 && puntuacionUsuario <= 7 ){
         return "CASI";
     }
-    if (puntuacionUsuario = 7.5 ){
-        return "WINNER";
-    }
-    else 
-        return "GAME_OVER";
+    return puntuacionUsuario == 7.5 
+        ? "WINNER"
+        : "GAME_OVER";
 }
 
 const comprobarEstadoBotónDameCarta = () : boolean => {
@@ -163,10 +157,9 @@ const comprobarEstadoBotónDameCarta = () : boolean => {
 
 const dameCartaAleatoria = () : number => {
     const numeroAleatorio = Math.floor(Math.random()*10);
-    if(numeroAleatorio >= 8) {
-        return numeroAleatorio+2;
-    }
-    return numeroAleatorio;
+    return numeroAleatorio >= 8
+        ? numeroAleatorio+2
+        : numeroAleatorio;
  }
  
 const calcularPuntuaciónSegúnCarta = (carta:number) :number => {
