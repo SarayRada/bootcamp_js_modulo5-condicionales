@@ -157,7 +157,7 @@ const comprobarEstadoBotónDameCarta = () : boolean => {
 }
 
 const crearNumeroAleatorio = () : number => {
-    return Math.floor(Math.random()*10)
+    return Math.ceil(Math.random()*10)
 }
 
 const dameCartaAleatoria = (numero: number) : number => {
@@ -177,16 +177,14 @@ const sumarPuntación = (carta:number) : void => {
 }
 
  const activarEstadoGameOver = () : Estado  => {
-     if(puntuacionUsuario > 7.5){
-         disabledButtonDameCarta();
-         disabledButtonPlantarse();
-         return "GAME_OVER";
-     }
-     return "KEEP_PLAYING";
+    disabledButtonDameCarta();
+    disabledButtonPlantarse();
+    return "GAME_OVER";
+
  }
 
  const activarBotónNuevaPartida = (disabled: boolean) => {
-    if(disabled == true){
+    if(disabled){
         const botón = document.getElementById('nuevaPartida');
 
         botón instanceof HTMLButtonElement
@@ -217,6 +215,12 @@ const activarBotónSaberMás = () => {
 }
 
 const comprobarPuntuación = () => {
+    if (puntuacionUsuario == 7.5) {
+        mostrarMensajePlantarse(cambiarEstado());
+        disabledButtonDameCarta();
+        disabledButtonPlantarse();
+        activarBotónNuevaPartida(comprobarEstadoBotónDameCarta());
+    }
     if (puntuacionUsuario > 7.5) {
         mostrarMensajeGameOver(activarEstadoGameOver());
         activarBotónNuevaPartida(comprobarEstadoBotónDameCarta());
