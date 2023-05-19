@@ -74,7 +74,7 @@ const mostrarMensajeSegúnEstado = (estado: Estado) => {
             insertarAlResultadoTexto("¡Lo has clavado! ¡ENHORABUENA!");
             break;
         case "GAME_OVER":
-            insertarAlResultadoTexto(`GAME OVER: tu puntuación es ${partida.puntuacionUsuario}`);
+            insertarAlResultadoTexto(`GAME OVER: tu puntuación es ${puntuacionUsuario}`);
             break;
         default:
             insertarAlResultadoTexto("No se cómo hemos acabado aquí!");
