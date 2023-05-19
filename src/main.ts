@@ -59,7 +59,7 @@ const mostrarCarta = (carta: number) : void => {
     }
 }
 
-const mostrarMensajePlantarse = (estado: Estado) => {
+const mostrarMensajeSegúnEstado = (estado: Estado) => {
     switch(estado){
         case "CONSERVADOR":
             insertarAlResultadoTexto("Has sido muy conservador.");
@@ -171,7 +171,7 @@ const setPuntuación = (number:number) : void => {
 }
 
 const partidaGanada = () => {
-    mostrarMensajePlantarse(obtenerEstado());
+    mostrarMensajeSegúnEstado(obtenerEstado());
     disabledButtonDameCarta();
     disabledButtonPlantarse();
     activarBotónNuevaPartida(comprobarEstadoBotónDameCarta());
@@ -224,7 +224,7 @@ const jugarCarta = () => {
 const plantase = () => {
     const estadoActual = obtenerEstado();
 
-    mostrarMensajePlantarse(estadoActual);
+    mostrarMensajeSegúnEstado(estadoActual);
     disabledButtonDameCarta();
     activarBotónNuevaPartida(comprobarEstadoBotónDameCarta());
     activarBotónSaberMás();
