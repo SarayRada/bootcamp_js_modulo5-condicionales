@@ -151,7 +151,7 @@ const calcularPuntuación = (carta:number) :number => {
 }
 
 const setPuntuación = (number:number) : void => {
-    puntuacionUsuario += number;
+    puntuacionUsuario = number;
 }
 
  const desactivarBotonesGameOver = ()  => {
