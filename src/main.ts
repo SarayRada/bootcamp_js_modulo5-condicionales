@@ -223,8 +223,8 @@ const jugarCarta = () => {
 
 const plantase = () => {
     const estadoActual = obtenerEstado();
-
     mostrarMensajeSegúnEstado(estadoActual);
+    disabledButtonPlantarse();
     disabledButtonDameCarta();
     activarBotónNuevaPartida(comprobarEstadoBotónDameCarta());
     activarBotónSaberMás();
