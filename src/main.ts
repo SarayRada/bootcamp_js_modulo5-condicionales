@@ -82,36 +82,36 @@ const mostrarMensajeSegúnEstado = (estado: Estado) => {
      }
 }
 
-const disabledButtonDameCarta = () :void =>{
+const cambiarEstadoBotónDameCarta = (enabled: boolean) :void =>{
     const dameCarta = document.getElementById("dameCarta");
 
     dameCarta instanceof HTMLButtonElement
-        ? dameCarta.disabled = true
-        : console.error("disabledButtonDameCarta = elemento con id dameCarta no se ha encontrado");
+        ? dameCarta.disabled = !enabled
+        : console.error("cambiarEstadoButtonDameCarta = elemento con id dameCarta no se ha encontrado");
 
 }
 
-const disabledButtonPlantarse = () :void =>{
+const cambiarEstadoBotónPlantarse = (enabled: boolean) :void =>{
     const plantarse = document.getElementById("plantarse");
 
     plantarse instanceof HTMLButtonElement
-        ?  plantarse.disabled = true
+        ?  plantarse.disabled = !enabled
         : console.error("disabledButtonPlantasrse = elemento con id plantarse no se ha encontrado")
 }
 
-const disabledButtonNuevaPartida = () => {
+const cambiarEstadoBotónNuevaPartida = (enabled: boolean) => {
     const boton = document.getElementById("nuevaPartida");
 
     boton instanceof HTMLButtonElement
-        ? boton.disabled = true
+        ? boton.disabled = !enabled
         : console.error("disabledButtonNuevaPartida: el elemento con id nuevaPartida no se ha encontrado")
 }
 
-const disabledButtonQueHubiesePasado = () => {
+const cambiarEstadoBotónQueHubiesePasado = (enabled: boolean) => {
     const boton = document.getElementById("queHubiesePasado");
 
     boton instanceof HTMLButtonElement
-        ? boton.disabled = true
+        ? boton.disabled = !enabled
         : console.error("disabledButtonQueHubiesePasado: el elemento con id queHubiesePasado no se ha encontrado")
 };
 
@@ -157,54 +157,18 @@ const setPuntuación = (number:number) : void => {
     puntuacionUsuario = number;
 }
 
- const desactivarBotonesGameOver = ()  => {
-    disabledButtonDameCarta();
-    disabledButtonPlantarse();
- }
-
- const activarBotónNuevaPartida = (disabled: boolean) => {
-    if(disabled){
-        const botón = document.getElementById('nuevaPartida');
-
-        botón instanceof HTMLButtonElement
-            ? botón.disabled = false
-            : console.error("activarBotónNuevaPartida: el elemento con el id nuevaPartida es null")
-    
-    }
-}
-
 const partidaGanada = () => {
     mostrarMensajeSegúnEstado(obtenerEstado());
-    disabledButtonDameCarta();
-    disabledButtonPlantarse();
-    activarBotónNuevaPartida(comprobarEstadoBotónDameCarta());
+    cambiarEstadoBotónDameCarta(false);
+    cambiarEstadoBotónPlantarse(false);
+    cambiarEstadoBotónNuevaPartida(comprobarEstadoBotónDameCarta())
 }
 
 const partidaPerdida = () => {
-    obtenerEstado();
-    desactivarBotonesGameOver();
+    cambiarEstadoBotónPlantarse(false);
+    cambiarEstadoBotónDameCarta(false);
     mostrarMensajeSegúnEstado(obtenerEstado());
-    activarBotónNuevaPartida(comprobarEstadoBotónDameCarta());
-}
-
-const activarBotones = () => {
-    const plantarse = document.getElementById("plantarse");
-    const dameCarta = document.getElementById("dameCarta");
-    if (plantarse instanceof HTMLButtonElement && dameCarta instanceof HTMLButtonElement) { 
-        plantarse.disabled = false;
-        dameCarta.disabled =false;
-    }
-    else {
-        console.error("activarBotones = elemento con id plantarse y dameCarta no se ha encontrado");
-    }
-}
-
-const activarBotónSaberMás = () => {
-    const botón = document.getElementById('queHubiesePasado');
-
-    botón instanceof HTMLButtonElement
-        ? botón.disabled = false
-        : console.error("activarBotónNuevaPartida: el elemento con el id nuevaPartida es null")
+    cambiarEstadoBotónNuevaPartida(comprobarEstadoBotónDameCarta())
 }
 
 const comprobarPuntuación = () => {
@@ -227,28 +191,29 @@ const jugarCarta = () => {
 const plantase = () => {
     const estadoActual = obtenerEstado();
     mostrarMensajeSegúnEstado(estadoActual);
-    disabledButtonPlantarse();
-    disabledButtonDameCarta();
-    activarBotónNuevaPartida(comprobarEstadoBotónDameCarta());
-    activarBotónSaberMás();
+    cambiarEstadoBotónPlantarse(false);
+    cambiarEstadoBotónDameCarta(false);
+    cambiarEstadoBotónNuevaPartida(comprobarEstadoBotónDameCarta())
+    cambiarEstadoBotónQueHubiesePasado(true);
 }
 
 const nuevaPartida = () => {
-    activarBotones();
+    cambiarEstadoBotónPlantarse(true);
+    cambiarEstadoBotónDameCarta(true);
     puntuacionUsuario = 0;
     insertarAlResultadoTexto(`Tu puntuación actual es: ${puntuacionUsuario}`);
-    disabledButtonNuevaPartida();
-    disabledButtonQueHubiesePasado();
+    cambiarEstadoBotónNuevaPartida(false);
+    cambiarEstadoBotónQueHubiesePasado(false);
     mostrarCarta(0);
 }
 
 const saberMas = () => {
-    disabledButtonPlantarse();
+    cambiarEstadoBotónPlantarse(false);
     const cartaAleatoria = dameCartaAleatoria(crearNumeroAleatorio());
     mostrarCarta(cartaAleatoria);
     setPuntuación(calcularPuntuación(cartaAleatoria));
     insertarAlResultadoTexto(`Tu puntuación hubiese sido: ${puntuacionUsuario}`);
-    disabledButtonQueHubiesePasado();
+    cambiarEstadoBotónQueHubiesePasado(false);
 }
 
 const botonDarCarta = document.getElementById("dameCarta");
